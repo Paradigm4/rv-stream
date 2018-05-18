@@ -1,0 +1,22 @@
+store(
+    redimension(
+        apply(
+            aio_input(
+                'path=/a/example/example.vcf',
+                'header=1',
+                'num_attributes=1',
+                'attribute_delimiter= '),
+            etc, a0),
+        <etc:string>[tuple_no=0:*:0:1]),
+    var);
+
+store(
+    redimension(
+        apply(
+            aio_input(
+                'path=/a/example/pheno',
+                'header=1',
+                'num_attributes=1'),
+            etc, a0),
+        <etc:string>[tuple_no=0:*:0:100000]),
+    pheno);
