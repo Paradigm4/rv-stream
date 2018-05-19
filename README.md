@@ -80,7 +80,16 @@ Here are the array schema used:
 ```bash
 > iquery --afl --query "show(assoc)"
 {i} schema
-{0} 'assoc<CHROM:int64,POS:int64,REF:string,ALT:string,N_INFORMATIVE:int64,Test:string,Beta:double,SE:double,Pvalue:double> [instance_id=0:1:0:1; chunk_no=0:*:0:1; value_no=0:*:0:1073741824]'
+{0} 'assoc<CHROM:int64,
+           POS:int64,
+           REF:string,
+           ALT:string,
+           N_INFORMATIVE:int64,
+           Test:string,
+           Beta:double,
+           SE:double,
+           Pvalue:double>
+          [instance_id=0:1:0:1; chunk_no=0:*:0:1; value_no=0:*:0:1073741824]'
 
 > iquery --afl --query "limit(assoc, 2)"
 {instance_id,chunk_no,value_no} CHROM,POS,REF,ALT,N_INFORMATIVE,Test,Beta,SE,Pvalue
