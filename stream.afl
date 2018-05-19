@@ -1,6 +1,9 @@
 store(
     stream(
-        var,
+        apply(
+            var,
+            chrom, chrom,
+            pos, pos),
         'python -u /a/stream.py',
         'format=feather',
         'types=int64,int64,string,string,int64,string,double,double,double',

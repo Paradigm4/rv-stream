@@ -20,6 +20,23 @@ Query was executed successfully
 {1,1,0} 1,3,'A','G',9,'1:3',0.858,0.783412,0.273425
 ```
 
+## Filter Variants
+
+Before running RVTest the input variants can be filtered by chromosome or position using `filter` or `between`:
+
+```bash
+stream(
+    filter(var, pos = 1),
+    ...
+```
+
+```bash
+stream(
+    between(var, null, 1,
+                 null, 1),
+    ...
+```
+
 # Single-Threaded RVTest
 
 This with the output produced by `rvtest` running on the initial
@@ -36,12 +53,12 @@ CHROM	POS	REF	ALT	N_INFORMATIVE	Test	Beta	SE	Pvalue
 
 # Arrays Schema
 
-Here are the array schemas used:
+Here are the array schema used:
 
 ```bash
 > iquery --afl --query "show(var)"
 {i} schema
-{0} 'var<etc:string> [tuple_no=0:*:0:1]'
+{0} 'var<etc:string> [chrom=0:*:0:1; pos=0:*:0:4]'
 ```
 
 ```bash

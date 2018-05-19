@@ -8,10 +8,11 @@ store(
             aio_input(
                 'path=/a/example/example.vcf',
                 'header=1',
-                'num_attributes=1',
-                'attribute_delimiter= '),
-            etc, a0),
-        <etc:string>[tuple_no=0:*:0:1]),
+                'num_attributes=2'),
+            chrom, int64(a0),
+            pos, int64(a1),
+            etc, rsub(error, 's/long\t//')),
+        <etc:string>[chrom, pos=1:*:0:1]),
     var);
 
 
