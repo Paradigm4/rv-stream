@@ -39,8 +39,8 @@ stream(
 
 # Single-Threaded RVTest
 
-This with the output produced by `rvtest` running on the initial
-files:
+Running `rvtest` on the initial files directly without using SciDB or
+`stream` produces the following output:
 
 ```bash
 > ../executable/rvtest --pheno pheno --inVcf example.vcf --single wald --out out
