@@ -59,16 +59,31 @@ Here are the array schema used:
 > iquery --afl --query "show(var)"
 {i} schema
 {0} 'var<etc:string> [chrom=0:*:0:1; pos=0:*:0:4]'
+
+> iquery --afl --query "limit(var, 2)"
+{chrom,pos} etc
+{1,1} '.	A	G	100	.	.	GT	0/1	0/0	0/0...'
+{1,3} '.	A	G	100	.	.	GT	0/0	0/0	0/0...'
 ```
 
 ```bash
 > iquery --afl --query "show(pheno)"
 {i} schema
 {0} 'pheno<etc:string> [tuple_no=0:*:0:100000]'
+
+ iquery --afl --query "limit(pheno, 2)"
+{tuple_no} etc
+{0} 'P1 P1 0 0 0 1.911 -1.465 -0.817 1'
+{1} 'P2 P2 0 0 2 2.146 -2.451 -0.178 2'
 ```
 
 ```bash
 > iquery --afl --query "show(assoc)"
 {i} schema
 {0} 'assoc<CHROM:int64,POS:int64,REF:string,ALT:string,N_INFORMATIVE:int64,Test:string,Beta:double,SE:double,Pvalue:double> [instance_id=0:1:0:1; chunk_no=0:*:0:1; value_no=0:*:0:1073741824]'
+
+> iquery --afl --query "limit(assoc, 2)"
+{instance_id,chunk_no,value_no} CHROM,POS,REF,ALT,N_INFORMATIVE,Test,Beta,SE,Pvalue
+{0,0,0} 1,1,'A','G',9,'1:1',0.18075,0.3885,0.641752
+{0,1,0} 1,3,'A','G',9,'1:3',0.858,0.783412,0.273425
 ```
