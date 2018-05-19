@@ -1,3 +1,7 @@
+load_library('accelerated_io_tools');
+load_library('superfunpack');
+
+
 store(
     redimension(
         apply(
@@ -9,6 +13,7 @@ store(
             etc, a0),
         <etc:string>[tuple_no=0:*:0:1]),
     var);
+
 
 store(
     redimension(
