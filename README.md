@@ -25,7 +25,7 @@ Query was executed successfully
 ## Filter Variants
 
 Before running RVTest the input variants can be filtered by
-chromosome, position, or indivisual (`P`) using `filter` or `between`:
+chromosome, position, or individual (`P`) using `filter` or `between`:
 
 ```bash
 stream(
