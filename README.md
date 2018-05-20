@@ -8,6 +8,8 @@ Paths need to be adjusted in `load.afl`, `stream.afl`, and `stream.py`.
 > iquery --afl --no-fetch --query-file load.afl
 Query was executed successfully
 Query was executed successfully
+Query was executed successfully
+Query was executed successfully
 ```
 
 ## Stream Data and Run RVTest
@@ -22,7 +24,8 @@ Query was executed successfully
 
 ## Filter Variants
 
-Before running RVTest the input variants can be filtered by chromosome or position using `filter` or `between`:
+Before running RVTest the input variants can be filtered by
+chromosome, position, or indivisual (`P`) using `filter` or `between`:
 
 ```bash
 stream(
@@ -32,8 +35,8 @@ stream(
 
 ```bash
 stream(
-    between(var, null, 1,
-                 null, 1),
+    between(var, null, 1, null,
+                 null, 1, null),
     ...
 ```
 
@@ -58,12 +61,28 @@ Here are the array schema used:
 ```bash
 > iquery --afl --query "show(var)"
 {i} schema
-{0} 'var<etc:string> [chrom=0:*:0:1; pos=0:*:0:4]'
+{0} 'var<id:string,
+         ref:string,
+         alt:string,
+         qual:int64,
+         flt:string,
+         info:string,
+         fmt:string,
+         gt:string>
+        [chrom=0:*:0:1; pos=0:*:0:1; p=1:500:0:500]'
 
-> iquery --afl --query "limit(var, 2)"
-{chrom,pos} etc
-{1,1} '.	A	G	100	.	.	GT	0/1	0/0	0/0...'
-{1,3} '.	A	G	100	.	.	GT	0/0	0/0	0/0...'
+> iquery --afl --query "limit(var, 10)"
+{chrom,pos,p} id,ref,alt,qual,flt,info,fmt,gt
+{1,1,1} '.','A','G',100,'.','.','GT','0/1'
+{1,1,2} '.','A','G',100,'.','.','GT','0/0'
+{1,1,3} '.','A','G',100,'.','.','GT','0/0'
+{1,1,4} '.','A','G',100,'.','.','GT','1/1'
+{1,1,5} '.','A','G',100,'.','.','GT','0/1'
+{1,1,6} '.','A','G',100,'.','.','GT','0/0'
+{1,1,7} '.','A','G',100,'.','.','GT','0/1'
+{1,1,8} '.','A','G',100,'.','.','GT','0/1'
+{1,1,9} '.','A','G',100,'.','.','GT','0/0'
+{1,1,10} '.','A','G',100,'.','.','GT','0/0'
 ```
 
 ```bash

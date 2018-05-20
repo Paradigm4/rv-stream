@@ -3,7 +3,8 @@ store(
         apply(
             var,
             chrom, chrom,
-            pos, pos),
+            pos,   pos,
+            p,     p),
         'python -u /a/stream.py',
         'format=feather',
         'types=int64,int64,string,string,int64,string,double,double,double',
