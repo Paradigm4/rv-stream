@@ -1,45 +1,33 @@
 load_library('accelerated_io_tools');
 load_library('equi_join');
+load_library('stream');
 
 
 store(
   redimension(
-    equi_join(
+    stream(
       apply(
         aio_input(
           'path=/a/example/example.vcf',
           'header=1',
-          'num_attributes=9'),
+          'num_attributes=509'),
         chrom, int64(a0),
         pos,   int64(a1),
-        id,    a2,
-        ref,   a3,
-        alt,   a4,
-        qual,  int64(a5),
-        flt,   a6,
-        info,  a7,
-        fmt,   a8),
-      apply(
-        filter(
-          aio_input(
-            'path=/a/example/example.vcf',
-            'header=1',
-            'num_attributes=509',
-            'split_on_dimension=1'),
-          attribute_no >= 9 and attribute_no <= 508),
-        p,  attribute_no - 8,
-        gt, a),
-      'left_names=tuple_no',
-      'right_names=tuple_no'),
-        <id:   string,
-         ref:  string,
-         alt:  string,
-         qual: int64,
-         flt:  string,
-         info: string,
-         fmt:  string,
-         gt:   string>[chrom, pos=0:*:0:1, p=1:500:0:500]),
-    var);
+        qual,  int64(a5)),
+      'python -u /a/load.py',
+      'format=feather',
+      'types=int64,int64,int64,string,string,string,int64,string,string,string,string',
+      'names=chrom,pos,p,id,ref,alt,qual,flt,info,fmt,gt'),
+    <id:   string,
+     ref:  string,
+     alt:  string,
+     qual: int64,
+     flt:  string,
+     info: string,
+     fmt:  string,
+     gt:   string>
+    [chrom, pos=0:*:0:1, p=1:500:0:500]),
+  var);
 
 
 store(
