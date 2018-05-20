@@ -1,13 +1,17 @@
 store(
-    stream(
-        apply(
-            var,
-            chrom, chrom,
-            pos,   pos,
-            p,     p),
-        'python -u /a/stream.py',
-        'format=feather',
-        'types=int64,int64,string,string,int64,string,double,double,double',
-        'names=CHROM,POS,REF,ALT,N_INFORMATIVE,Test,Beta,SE,Pvalue',
-        _sg(pheno, 0)),
-    assoc)
+  stream(
+    apply(
+      var,
+      chrom, chrom,
+      pos,   pos,
+      p,     p),
+    'python -u /a/stream.py',
+    'format=feather',
+    'types=int64,int64,string,string,int64,string,double,double,double',
+    'names=CHROM,POS,REF,ALT,N_INFORMATIVE,Test,Beta,SE,Pvalue',
+    _sg(
+      apply(
+        pheno,
+        fid, fid),
+      0)),
+  assoc)

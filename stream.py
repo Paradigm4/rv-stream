@@ -14,10 +14,17 @@ pheno_path = os.path.join(inst_path, 'pheno')
 sys.stderr.write('-- - init - --\n')
 
 pheno_df = scidbstrm.read()
+
+sys.stderr.write('pheno_df: {}\n'.format(len(pheno_df)))
+sys.stderr.write('{}\n'.format(pheno_df.dtypes))
+sys.stderr.write('{}\n'.format(pheno_df.head()))
+
+pheno_df['fid'] = pheno_df[['fid']].apply(lambda x: 'P{}'.format(x[0]), axis=1)
 pheno_df.to_csv(
     path_or_buf=pheno_path,
-    header=('fid iid fatid matid sex y1 y2 y3 y4',),
-    index=False)
+    columns='fid iid fatid matid sex y1 y2 y3 y4'.split(),
+    index=False,
+    sep=' ')
 scidbstrm.write()
 
 

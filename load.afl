@@ -43,12 +43,28 @@ store(
 
 
 store(
-    redimension(
-        apply(
-            aio_input(
-                'path=/a/example/pheno',
-                'header=1',
-                'num_attributes=1'),
-            etc, a0),
-        <etc:string>[tuple_no=0:*:0:100000]),
-    pheno);
+  redimension(
+    apply(
+      aio_input(
+        'path=/a/example/pheno',
+        'header=1',
+        'num_attributes=9',
+        'attribute_delimiter= '),
+      fid,   int64(trim(a0, 'P')),
+      iid,   a1,
+      fatid, int64(a2),
+      matid, int64(a3),
+      sex,   int64(a4),
+      y1,    double(a5),
+      y2,    double(a6),
+      y3,    double(a7),
+      y4,    int64(a8)),
+    <iid:  string,
+     fatid: int64,
+     matid: int64,
+     sex:   int64,
+     y1:    double,
+     y2:    double,
+     y3:    double,
+     y4:    int64>[fid=1:500:0:500]),
+  pheno);

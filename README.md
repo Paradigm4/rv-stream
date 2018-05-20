@@ -40,6 +40,8 @@ stream(
     ...
 ```
 
+Pheno-types can also be filtered by individual (`P`).
+
 # Single-Threaded RVTest
 
 Running `rvtest` on the initial files directly without using SciDB or
@@ -88,12 +90,23 @@ Here are the array schema used:
 ```bash
 > iquery --afl --query "show(pheno)"
 {i} schema
-{0} 'pheno<etc:string> [tuple_no=0:*:0:100000]'
+{0} 'pheno<iid:string,
+           fatid:int64,
+           matid:int64,
+           sex:int64,
+           y1:double,
+           y2:double,
+           y3:double,
+           y4:int64>
+          [fid=1:500:0:500]'
 
- iquery --afl --query "limit(pheno, 2)"
-{tuple_no} etc
-{0} 'P1 P1 0 0 0 1.911 -1.465 -0.817 1'
-{1} 'P2 P2 0 0 2 2.146 -2.451 -0.178 2'
+> iquery --afl --query "limit(pheno, 5)"
+{fid} iid,fatid,matid,sex,y1,y2,y3,y4
+{1} 'P1',0,0,0,1.911,-1.465,-0.817,1
+{2} 'P2',0,0,2,2.146,-2.451,-0.178,2
+{3} 'P3',0,0,2,1.086,-1.194,-0.899,1
+{4} 'P4',0,0,2,0.704,-1.052,-0.237,1
+{5} 'P5',0,0,1,2.512,-3.085,-2.579,1
 ```
 
 ```bash
