@@ -71,7 +71,7 @@ Here are the array schema used:
          info:string,
          fmt:string,
          gt:string>
-        [chrom=0:*:0:1; pos=0:*:0:1; p=1:500:0:500]'
+        [chrom=1:20:0:1, pos=1:*:0:5000, p=1:500:0:500]
 
 > iquery --afl --query "limit(var, 10)"
 {chrom,pos,p} id,ref,alt,qual,flt,info,fmt,gt
@@ -127,4 +127,80 @@ Here are the array schema used:
 {instance_id,chunk_no,value_no} CHROM,POS,REF,ALT,N_INFORMATIVE,Test,Beta,SE,Pvalue
 {0,0,0} 1,1,'A','G',9,'1:1',0.18075,0.3885,0.641752
 {0,1,0} 1,3,'A','G',9,'1:3',0.858,0.783412,0.273425
+```
+
+# Performance Evaluation
+
+We used the `gen.py` script to generate a `200,000` lines variants
+file with `500` individuals and a corresponding phenotype file for the
+`500` individuals.
+
+```bash
+> python gen.py vcf 20 10000
+> wc -l gen.vcf
+200001 gen.vcf
+> ls -lh gen.vcf
+.. 387M gen.vcf
+> python gen.py pheno
+> wc -l gen.pheno
+501 gen.pheno
+> ls -lh gen.pheno
+... 19K gen.pheno
+```
+
+We used two SciDB instances running on the same PC. The PC has a Intel
+Core i5 processor at `2.50GHz` and `8 GB` RAM.
+
+## Single-Threaded RVTest
+
+```bash
+> ./executable/rvtest --noweb --pheno gen.pheno --inVcf gen.vcf --single wald --out out
+...
+[INFO]	Program version: 20171009
+[INFO]	Analysis started at: Sun May 20 19:00:23 2018
+[INFO]	Loaded [ 500 ] samples from genotype files
+[INFO]	Loaded [ 500 ] sample pheontypes
+[INFO]	Loaded 231 male, 209 female and 60 sex-unknonw samples from gen.pheno
+[INFO]	Analysis begins with [ 500 ] samples...
+[INFO]	Impute missing genotype to mean (by default)
+[INFO]	Analysis started
+[INFO]	Analyzed [ 200000 ] variants
+[INFO]	Analysis ends at: Sun May 20 19:00:49 2018
+[INFO]	Analysis took 26 seconds
+RVTESTS finished successfully
+```
+
+## Load Variants and Phenotypes in SciDB
+
+```bash
+> time iquery --afl --no-fetch --query-file load.afl
+...
+real	21m53.451s
+```
+
+## Stream Data and Run RVTest in SciDB
+
+```bash
+> time iquery --no-fetch --afl --query-file stream.afl
+...
+real	5m35.588s
+```
+
+## Filter Variants by Chromosome and Position
+
+```bash
+> time iquery --afl --query "filter(var, chrom = 5 and pos = 10)" \
+  >  /dev/null
+...
+real	0m1.704s
+```
+
+## Load Variants and Phenotypes as-is in SciDB
+
+Using `load.afl` script from [v0.1](tree/v0.1):
+
+```bash
+> time iquery --afl --no-fetch --query-file load.afl
+...
+real	0m10.380s
 ```
