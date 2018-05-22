@@ -148,8 +148,8 @@ file with `500` individuals and a corresponding phenotype file for the
 ... 19K gen.pheno
 ```
 
-We used two SciDB instances running on the same PC. The PC has a Intel
-Core i5 processor at `2.50GHz` and `8 GB` RAM.
+We used two SciDB instances running on the same PC. The PC has an
+Intel Core i5 processor at `2.50GHz` and `8 GB` RAM.
 
 ## Single-Threaded RVTest
 
