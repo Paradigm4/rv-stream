@@ -197,7 +197,7 @@ real	0m1.704s
 
 ## Load Variants and Phenotypes as-is in SciDB
 
-Using `load.afl` script from [v0.1](tree/v0.1):
+Using `load.afl` script from [v0.1](../../tree/v0.1):
 
 ```bash
 > time iquery --afl --no-fetch --query-file load.afl
