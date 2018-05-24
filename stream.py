@@ -10,6 +10,8 @@ import sys
 root_path = '/o'
 inst_path = tempfile.mkdtemp(dir=root_path)
 pheno_path = os.path.join(inst_path, 'pheno')
+var_path = os.path.join(inst_path, 'var.vcf')
+assoc_path = os.path.join(inst_path, 'out')
 
 sys.stderr.write('-- - init - --\n')
 
@@ -32,7 +34,6 @@ scidbstrm.write()
 
 sys.stderr.write('-- - start - --\n')
 
-i = 0
 while True:
     # Read DataFrame
     var_df = scidbstrm.read()
@@ -45,11 +46,6 @@ while True:
     sys.stderr.write('{}\n'.format(var_df.dtypes))
     sys.stderr.write('{}\n'.format(var_df.head()))
 
-    iter_path = os.path.join(inst_path, '{:03d}'.format(i))
-    os.mkdir(iter_path)
-
-    var_path = os.path.join(iter_path, 'var.vcf')
-    assoc_path = os.path.join(iter_path, 'out')
 
     attr_df = var_df[var_df.p == 1].drop(
         columns=['p', 'gt']).set_index(
@@ -83,7 +79,7 @@ while True:
     sys.stderr.write('cmd: {}\n'.format(' '.join(cmd)))
     subprocess.call(cmd, stdout=open('/dev/null'))
 
-    assoc_single_path = os.path.join(iter_path, 'out.SingleWald.assoc')
+    assoc_single_path = os.path.join(inst_path, 'out.SingleWald.assoc')
     assoc_df = pandas.read_csv(
         filepath_or_buffer=assoc_single_path,
         sep='\t')
@@ -92,11 +88,10 @@ while True:
     # Write DataFrame
     scidbstrm.write(assoc_df)
     del assoc_df
-    i += 1
 
 
 # Cleanup
-# shutil.rmtree(inst_path)
+shutil.rmtree(inst_path)
 
 # Write final DataFrame (if any)
 sys.stderr.write('-- - stop - --\n')
