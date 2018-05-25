@@ -71,7 +71,7 @@ Here are the array schema used:
          info:string,
          fmt:string,
          gt:string>
-        [chrom=1:20:0:1, pos=1:*:0:5000, p=1:500:0:500]
+        [chrom=1:20:0:1, pos=1:*:0:10000, p=1:500:0:500]
 
 > iquery --afl --query "limit(var, 10)"
 {chrom,pos,p} id,ref,alt,qual,flt,info,fmt,gt
@@ -183,7 +183,7 @@ real	21m53.451s
 ```bash
 > time iquery --no-fetch --afl --query-file stream.afl
 ...
-real	5m35.588s
+real	5m8.816s
 ```
 
 ## Filter Variants by Chromosome and Position
