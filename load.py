@@ -25,18 +25,11 @@ while True:
                     [line[510], # chrom
                      line[511], # pos
                      1 + j,
-                     line[2],   # id
-                     line[3],   # ref
-                     line[4],   # pos
-                     line[512], # qual
-                     line[6],   # flt
-                     line[7],   # info
-                     line[8],   # fmt
                      line[9 + j]])
 
     df_out = pandas.DataFrame(
         lst,
-        columns='chrom pos p id ref alt qual flt info fmt gt'.split())
+        columns='chrom pos p gt'.split())
 
     # Write DataFrame
     scidbstrm.write(df_out)

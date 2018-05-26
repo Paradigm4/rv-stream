@@ -54,16 +54,16 @@ while True:
         p_lst = 500
         chrom = pos = None
         for line in var_df.itertuples(index=False, name=None):
-            if chrom == line[8] and pos == line[9]:
+            if chrom == line[1] and pos == line[2]:
 
                 # Nulls between last value and this value
-                p_crt = line[10]
+                p_crt = line[3]
                 f.write('\t0/0' * (p_crt - p_lst - 1))
                 p_lst = p_crt
 
                 # This value
                 f.write('\t')
-                f.write(line[7])
+                f.write(line[0])
 
             else:
                 # End previous row
@@ -71,18 +71,19 @@ while True:
                 f.write('\n')
 
                 # New row attributes
-                f.write('\t'.join(map(str, line[8:10] + line[:7])))
+                f.write('\t'.join(map(str, line[1:3])))
+                f.write('\t.\tA\tG\t100\t.\t.\tGT')
 
                 # New row nulls
-                p_lst = line[10]
+                p_lst = line[3]
                 f.write('\t0/0' * (p_lst - 1))
 
                 # New row first value
                 f.write('\t')
-                f.write(line[7])
+                f.write(line[0])
 
-                chrom = line[8]
-                pos = line[9]
+                chrom = line[1]
+                pos = line[2]
 
         # End last row
         f.write('\t0/0' * (500 - p_lst))

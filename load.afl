@@ -12,20 +12,12 @@ store(
           'header=1',
           'num_attributes=509'),
         chrom, int64(a0),
-        pos,   int64(a1),
-        qual,  int64(a5)),
+        pos,   int64(a1)),
       'python -u /a/load.py',
       'format=feather',
-      'types=int64,int64,int64,string,string,string,int64,string,string,string,string',
-      'names=chrom,pos,p,id,ref,alt,qual,flt,info,fmt,gt'),
-    <id:   string,
-     ref:  string,
-     alt:  string,
-     qual: int64,
-     flt:  string,
-     info: string,
-     fmt:  string,
-     gt:   string>
+      'types=int64,int64,int64,string',
+      'names=chrom,pos,p,gt'),
+    <gt:string>
     [chrom=1:20:0:10, pos=1:*:0:10000, p=1:500:0:500]),
   var);
 
