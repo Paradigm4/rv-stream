@@ -71,20 +71,20 @@ Here are the array schema used:
          info:string,
          fmt:string,
          gt:string>
-        [chrom=1:20:0:1, pos=1:*:0:10000, p=1:500:0:500]
+        [chrom=1:20:0:10; pos=1:*:0:10000; p=1:500:0:500]
 
 > iquery --afl --query "limit(var, 10)"
 {chrom,pos,p} id,ref,alt,qual,flt,info,fmt,gt
-{1,1,1} '.','A','G',100,'.','.','GT','0/1'
-{1,1,2} '.','A','G',100,'.','.','GT','0/0'
-{1,1,3} '.','A','G',100,'.','.','GT','0/0'
 {1,1,4} '.','A','G',100,'.','.','GT','1/1'
-{1,1,5} '.','A','G',100,'.','.','GT','0/1'
-{1,1,6} '.','A','G',100,'.','.','GT','0/0'
-{1,1,7} '.','A','G',100,'.','.','GT','0/1'
 {1,1,8} '.','A','G',100,'.','.','GT','0/1'
-{1,1,9} '.','A','G',100,'.','.','GT','0/0'
-{1,1,10} '.','A','G',100,'.','.','GT','0/0'
+{1,1,9} '.','A','G',100,'.','.','GT','0/1'
+{1,1,11} '.','A','G',100,'.','.','GT','0/1'
+{1,1,19} '.','A','G',100,'.','.','GT','0/1'
+{1,1,20} '.','A','G',100,'.','.','GT','0/1'
+{1,1,21} '.','A','G',100,'.','.','GT','0/1'
+{1,1,35} '.','A','G',100,'.','.','GT','0/1'
+{1,1,40} '.','A','G',100,'.','.','GT','1/1'
+{1,1,42} '.','A','G',100,'.','.','GT','0/1'
 ```
 
 ```bash
@@ -175,7 +175,7 @@ RVTESTS finished successfully
 ```bash
 > time iquery --afl --no-fetch --query-file load.afl
 ...
-real	21m53.451s
+real	4m45.308s
 ```
 
 ## Stream Data and Run RVTest in SciDB
@@ -183,7 +183,7 @@ real	21m53.451s
 ```bash
 > time iquery --no-fetch --afl --query-file stream.afl
 ...
-real	5m8.816s
+real	1m41.592s
 ```
 
 ## Filter Variants by Chromosome and Position

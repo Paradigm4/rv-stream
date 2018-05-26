@@ -19,23 +19,24 @@ while True:
 
     lst = []
     for line in df_in.itertuples(index=False):
-      for j in range(500):
-        lst.append(
-            [line[510], # chrom
-             line[511], # pos
-             1 + j,
-             line[2],   # id
-             line[3],   # ref
-             line[4],   # pos
-             line[512], # qual
-             line[6],   # flt
-             line[7],   # info
-             line[8],   # fmt
-             line[9 + j]])
+        for j in range(500):
+            if line[9 + j] != '0/0':
+                lst.append(
+                    [line[510], # chrom
+                     line[511], # pos
+                     1 + j,
+                     line[2],   # id
+                     line[3],   # ref
+                     line[4],   # pos
+                     line[512], # qual
+                     line[6],   # flt
+                     line[7],   # info
+                     line[8],   # fmt
+                     line[9 + j]])
 
     df_out = pandas.DataFrame(
-      lst,
-      columns='chrom pos p id ref alt qual flt info fmt gt'.split())
+        lst,
+        columns='chrom pos p id ref alt qual flt info fmt gt'.split())
 
     # Write DataFrame
     scidbstrm.write(df_out)

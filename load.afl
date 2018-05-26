@@ -26,7 +26,7 @@ store(
      info: string,
      fmt:  string,
      gt:   string>
-    [chrom=1:20:0:1, pos=1:*:0:10000, p=1:500:0:500]),
+    [chrom=1:20:0:10, pos=1:*:0:10000, p=1:500:0:500]),
   var);
 
 
