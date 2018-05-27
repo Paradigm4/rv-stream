@@ -249,7 +249,7 @@ RVTESTS finished successfully
 ```bash
 > time iquery --afl --no-fetch --query-file load.afl
 ...
-real	0m26.823s
+real	0m30.280s
 ```
 
 ### Stream Data and Run RVTest in SciDB
@@ -257,5 +257,12 @@ real	0m26.823s
 ```bash
 > time iquery --no-fetch --afl --query-file stream.afl
 ...
-real	4m0.436s
+real	3m20.771s
+```
+Schema used:
+```bash
+> iquery -aq "show(var)"
+{i} schema
+{0} 'var<gt1:int64,gt2:int64,phase:int64>
+        [chrom=1:20:0:20; pos=1:*:0:30; p=1:360000:0:360000]'
 ```
