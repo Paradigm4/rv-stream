@@ -25,11 +25,13 @@ while True:
                     [line[510], # chrom
                      line[511], # pos
                      1 + j,
-                     line[9 + j]])
+                     int(line[9 + j][:1]),
+                     int(line[9 + j][2:]),
+                     0 if line[9 + j][1:2] == '/' else 1])
 
     df_out = pandas.DataFrame(
         lst,
-        columns='chrom pos p gt'.split())
+        columns='chrom pos p gt1 gt2 phase'.split())
 
     # Write DataFrame
     scidbstrm.write(df_out)

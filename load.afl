@@ -15,9 +15,9 @@ store(
         pos,   int64(a1)),
       'python -u /a/load.py',
       'format=feather',
-      'types=int64,int64,int64,string',
-      'names=chrom,pos,p,gt'),
-    <gt:string>
+      'types=int64,int64,int64,int64,int64,int64',
+      'names=chrom,pos,p,gt1,gt2,phase'),
+    <gt1:int64, gt2:int64, phase:int64>
     [chrom=1:20:0:10, pos=1:*:0:10000, p=1:500:0:500]),
   var);
 

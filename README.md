@@ -63,21 +63,23 @@ Here are the array schema used:
 ```bash
 > iquery --afl --query "show(var)"
 {i} schema
-{0} 'var<gt:string>
+{0} 'var<gt1:int64,
+         gt2:int64,
+         phase:int64>
         [chrom=1:20:0:10; pos=1:*:0:10000; p=1:500:0:500]
 
 > iquery --afl --query "limit(var, 10)"
-{chrom,pos,p} gt
-{1,1,4} '1/1'
-{1,1,8} '0/1'
-{1,1,9} '0/1'
-{1,1,11} '0/1'
-{1,1,19} '0/1'
-{1,1,20} '0/1'
-{1,1,21} '0/1'
-{1,1,35} '0/1'
-{1,1,40} '1/1'
-{1,1,42} '0/1'
+{chrom,pos,p} gt1,gt2,phase
+{1,1,4} 1,1,0
+{1,1,8} 0,1,0
+{1,1,9} 0,1,0
+{1,1,11} 0,1,0
+{1,1,19} 0,1,0
+{1,1,20} 0,1,0
+{1,1,21} 0,1,0
+{1,1,35} 0,1,0
+{1,1,40} 1,1,0
+{1,1,42} 0,1,0
 ```
 
 ```bash
@@ -168,7 +170,7 @@ RVTESTS finished successfully
 ```bash
 > time iquery --afl --no-fetch --query-file load.afl
 ...
-real	2m12.411s
+real	2m16.397s
 ```
 
 ## Stream Data and Run RVTest in SciDB
@@ -176,7 +178,7 @@ real	2m12.411s
 ```bash
 > time iquery --no-fetch --afl --query-file stream.afl
 ...
-real	0m47.058s
+real	0m44.291s
 ```
 
 ## Filter Variants by Chromosome and Position
