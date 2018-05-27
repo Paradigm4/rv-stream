@@ -98,9 +98,6 @@ while True:
     del var_df
     gc.collect()
 
-    tm_b = time.time()
-    sys.stderr.write('time: {}\n'.format(tm_b - tm_a))
-
     cmd = ('/a/executable/rvtest',
            '--noweb',
            '--pheno', pheno_path,
