@@ -126,17 +126,19 @@ Here are the array schema used:
 
 # Performance Evaluation
 
+## Small Setup
+
 We used the `gen.py` script to generate a `200,000` lines variants
 file with `500` individuals and a corresponding phenotype file for the
 `500` individuals.
 
 ```bash
-> python gen.py vcf 20 10000
+> python gen.py vcf 500 20 10000
 > wc -l gen.vcf
 200001 gen.vcf
 > ls -lh gen.vcf
-.. 387M gen.vcf
-> python gen.py pheno
+... 387M gen.vcf
+> python gen.py pheno 500
 > wc -l gen.pheno
 501 gen.pheno
 > ls -lh gen.pheno
@@ -146,7 +148,7 @@ file with `500` individuals and a corresponding phenotype file for the
 We used two SciDB instances running on the same PC. The PC has an
 Intel Core i5 processor at `2.50GHz` and `8 GB` RAM.
 
-## Single-Threaded RVTest
+### Single-Threaded RVTest
 
 ```bash
 > ./executable/rvtest --noweb --pheno gen.pheno --inVcf gen.vcf --single wald --out out
@@ -165,7 +167,7 @@ Intel Core i5 processor at `2.50GHz` and `8 GB` RAM.
 RVTESTS finished successfully
 ```
 
-## Load Variants and Phenotypes in SciDB
+### Load Variants and Phenotypes in SciDB
 
 ```bash
 > time iquery --afl --no-fetch --query-file load.afl
@@ -173,7 +175,7 @@ RVTESTS finished successfully
 real	2m16.397s
 ```
 
-## Stream Data and Run RVTest in SciDB
+### Stream Data and Run RVTest in SciDB
 
 ```bash
 > time iquery --no-fetch --afl --query-file stream.afl
@@ -181,7 +183,7 @@ real	2m16.397s
 real	0m44.291s
 ```
 
-## Filter Variants by Chromosome and Position
+### Filter Variants by Chromosome and Position
 
 ```bash
 > time iquery --afl --query "filter(var, chrom = 5 and pos = 10)" \
@@ -190,7 +192,7 @@ real	0m44.291s
 real	0m1.704s
 ```
 
-## Load Variants and Phenotypes as-is in SciDB
+### Load Variants and Phenotypes as-is in SciDB
 
 Using `load.afl` script from [v0.1](../../tree/v0.1):
 
@@ -198,4 +200,62 @@ Using `load.afl` script from [v0.1](../../tree/v0.1):
 > time iquery --afl --no-fetch --query-file load.afl
 ...
 real	0m10.380s
+```
+
+## Large Setup
+
+We used the `gen.py` script to generate a `20,000` lines variants
+file with `100,000` individuals and a corresponding phenotype file for the
+`100,000` individuals.
+
+```bash
+> python3 gen.py var 100000 20 1000
+> wc -l gen.vcf
+20001 gen.vcf
+> ls -lh gen.vcf
+... 7.5G gen.vcf
+> python gen.py pheno 100000
+> wc -l gen.pheno
+100001 gen.pheno
+> ls -lh gen.pheno
+... 4.0M gen.pheno
+```
+
+We used 32 SciDB instances running on the same server. The PC has two
+Intel Xeon processors at `2.30GHz` with 16 cores each and `250 GB`
+RAM.
+
+### Single-Threaded RVTest
+
+```bash
+> ./executable/rvtest --noweb --pheno gen.pheno --inVcf gen.vcf --single wald --out out
+...
+[INFO]	Program version: 20171009
+[INFO]	Analysis started at: Sun May 27 22:17:38 2018
+[INFO]	Loaded [ 100000 ] samples from genotype files
+[INFO]	Loaded [ 100000 ] sample pheontypes
+[INFO]	Loaded 44477 male, 44465 female and 11058 sex-unknonw samples from gen.pheno
+[INFO]	Analysis begins with [ 100000 ] samples...
+[INFO]	Impute missing genotype to mean (by default)
+[INFO]	Analysis started
+[INFO]	Analyzed [ 20000 ] variants
+[INFO]	Analysis ends at: Sun May 27 22:33:58 2018
+[INFO]	Analysis took 980 seconds
+RVTESTS finished successfully
+```
+
+### Load Variants and Phenotypes in SciDB
+
+```bash
+> time iquery --afl --no-fetch --query-file load.afl
+...
+real	0m26.823s
+```
+
+### Stream Data and Run RVTest in SciDB
+
+```bash
+> time iquery --no-fetch --afl --query-file stream.afl
+...
+real	4m0.436s
 ```
