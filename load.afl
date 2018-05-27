@@ -10,7 +10,7 @@ store(
         aio_input(
           'path=/a/gen.vcf',
           'header=1',
-          'num_attributes=509'),
+          'num_attributes=10009'),
         chrom, int64(a0),
         pos,   int64(a1)),
       'python -u /a/load.py',
@@ -18,7 +18,7 @@ store(
       'types=int64,int64,int64,int64,int64,int64',
       'names=chrom,pos,p,gt1,gt2,phase'),
     <gt1:int64, gt2:int64, phase:int64>
-    [chrom=1:20:0:10, pos=1:*:0:10000, p=1:500:0:500]),
+    [chrom=1:30:0:30, pos=1:*:0:10, p=1:360000:0:360000]),
   var);
 
 
@@ -46,5 +46,5 @@ store(
      y1:    double,
      y2:    double,
      y3:    double,
-     y4:    int64>[fid=1:500:0:500]),
+     y4:    int64>[fid=1:360000:0:360000]),
   pheno);

@@ -13,17 +13,19 @@ while True:
         # End of stream
         break
 
-    sys.stderr.write('df_in: {}\n'.format(len(df_in)))
+    sample = len(df_in.columns) - 12
+
+    sys.stderr.write('df_in: {},{}\n'.format(len(df_in), sample))
     sys.stderr.write('df_in.dtype[:5]: {}\n'.format(df_in.dtypes[:5]))
     sys.stderr.write('df_in.dtype[-5:]: {}\n'.format(df_in.dtypes[-5:]))
 
     lst = []
     for line in df_in.itertuples(index=False):
-        for j in range(500):
+        for j in range(sample):
             if line[9 + j] != '0/0':
                 lst.append(
-                    [line[510], # chrom
-                     line[511], # pos
+                    [line[sample + 10], # chrom
+                     line[sample + 11], # pos
                      1 + j,
                      int(line[9 + j][:1]),
                      int(line[9 + j][2:]),
