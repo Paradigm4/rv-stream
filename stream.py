@@ -56,7 +56,8 @@ while True:
         if cnt == 0:
             f.write(
                 '#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\t{}'.format(
-                    '\t'.join('P{}'.format(1 + i) for i in range(sample))))
+                    '\t'.join('P{}'.format(1 + i) for i in range(sample))) +
+                '\n')
         p_lst = sample
         chrom = pos = None
         for line in var_df.itertuples(index=False, name=None):
@@ -75,8 +76,9 @@ while True:
 
             else:
                 # End previous row
-                f.write('\t0/0' * (sample - p_lst))
-                f.write('\n')
+                if chrom is not None:
+                    f.write('\t0/0' * (sample - p_lst))
+                    f.write('\n')
 
                 # New row attributes
                 f.write('\t'.join(map(str, line[3:5])))
@@ -126,7 +128,7 @@ if cnt:
 
 
 # Cleanup
-shutil.rmtree(inst_path)
+# shutil.rmtree(inst_path)
 
 # Write final DataFrame (if any)
 sys.stderr.write('-- - stop {} - --\n'.format(cnt))
