@@ -15,9 +15,9 @@ while True:
 
     sample = len(df_in.columns) - 12
 
-    sys.stderr.write('df_in: {},{}\n'.format(len(df_in), sample))
-    sys.stderr.write('df_in.dtype[:5]: {}\n'.format(df_in.dtypes[:5]))
-    sys.stderr.write('df_in.dtype[-5:]: {}\n'.format(df_in.dtypes[-5:]))
+    # sys.stderr.write('df_in: {},{}\n'.format(len(df_in), sample))
+    # sys.stderr.write('df_in.dtype[:5]: {}\n'.format(df_in.dtypes[:5]))
+    # sys.stderr.write('df_in.dtype[-5:]: {}\n'.format(df_in.dtypes[-5:]))
 
     lst = []
     for line in df_in.itertuples(index=False):
