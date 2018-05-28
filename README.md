@@ -266,3 +266,102 @@ Schema used:
 {0} 'var<gt1:int64,gt2:int64,phase:int64>
         [chrom=1:20:0:1; pos=1:*:0:100; p=1:360000:0:360000]
 ```
+
+## Extra Large Setup
+
+We used the `gen.py` script to generate a `76,183` lines variants file
+with `353,948` individuals and a corresponding phenotype file for the
+`353,948` individuals.
+
+```bash
+> python3 gen.py var 353948 29 2627
+> wc -l gen.vcf
+76184 gen.vcf
+> ls -lh gen.vcf
+... 101G gen.vcf
+> python3 gen.py pheno 353948
+> wc -l gen.pheno
+353949 gen.pheno
+> ls -lh gen.pheno
+... 15M gen.pheno
+```
+
+We used 32 SciDB instances running on the same server. The PC has two
+Intel Xeon processors at `2.30GHz` with 16 cores each and `250 GB`
+RAM.
+
+### Load Variants and Phenotypes in SciDB
+
+```bash
+> time iquery --afl --no-fetch --query-file load.afl
+...
+1:33:48 elapsed
+```
+
+### Stream Data and Run RVTest in SciDB
+
+```bash
+> time iquery --no-fetch --afl --query-file stream.afl
+...
+1:01:40 elapsed
+```
+Schema used:
+```bash
+> iquery -aq "show(var)"
+{i} schema
+{0} 'var<gt1:int64,gt2:int64,phase:int64>
+        [chrom=1:30:0:1; pos=1:*:0:1; p=1:360000:0:360000]'
+```
+Average chunk size in `MB`:
+```bash
+> iquery --afl --query "
+    project(
+      apply(
+        summarize(var),
+        mb, avg_bytes / 1024. / 1024),
+      mb)"
+{inst,attid} mb
+{0,0} 0.350898
+```
+Number of chunks per instance:
+```bash
+> iquery --afl --query "
+    project(
+      apply(
+        summarize(var, by_instance:1),
+        no_chunks, chunks / 4),
+      no_chunks)"
+{inst,attid} no_chunks
+{0,0} 2405
+{1,0} 2376
+{2,0} 2356
+{3,0} 2365
+{4,0} 2376
+{5,0} 2373
+{6,0} 2378
+{7,0} 2394
+{8,0} 2444
+{9,0} 2366
+{10,0} 2432
+{11,0} 2289
+{12,0} 2343
+{13,0} 2384
+{14,0} 2399
+{15,0} 2336
+{16,0} 2400
+{17,0} 2389
+{18,0} 2347
+{19,0} 2286
+{20,0} 2378
+{21,0} 2320
+{22,0} 2413
+{23,0} 2414
+{24,0} 2369
+{25,0} 2412
+{26,0} 2359
+{27,0} 2375
+{28,0} 2419
+{29,0} 2471
+{30,0} 2396
+{31,0} 2419
+```
