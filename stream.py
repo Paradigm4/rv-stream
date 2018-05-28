@@ -8,20 +8,22 @@ import subprocess
 import sys
 
 
-root_path = '/o'
+root_path = '/tmp'
+
+
+sys.stderr.write('-- - init - --\n')
 inst_path = tempfile.mkdtemp(dir=root_path)
 pheno_path = os.path.join(inst_path, 'pheno')
 var_path = os.path.join(inst_path, 'var.vcf')
 assoc_path = os.path.join(inst_path, 'out')
 
-sys.stderr.write('-- - init - --\n')
 
 pheno_df = scidbstrm.read()
 sample = len(pheno_df)
 
-sys.stderr.write('pheno_df: {}\n'.format(sample))
-sys.stderr.write('{}\n'.format(pheno_df.dtypes))
-sys.stderr.write('{}\n'.format(pheno_df.head()))
+# sys.stderr.write('pheno_df: {}\n'.format(sample))
+# sys.stderr.write('{}\n'.format(pheno_df.dtypes))
+# sys.stderr.write('{}\n'.format(pheno_df.head()))
 
 pheno_df['fid'] = pheno_df[['fid']].apply(lambda x: 'P{}'.format(x[0]), axis=1)
 pheno_df.to_csv(
@@ -34,9 +36,7 @@ del pheno_df
 scidbstrm.write()
 
 
-sys.stderr.write('-- - start - --\n')
-
-
+cnt = 0
 while True:
     # Read DataFrame
     var_df = scidbstrm.read()
@@ -45,15 +45,15 @@ while True:
         # End of stream
         break
 
-    sys.stderr.write('var_df: {}\n'.format(len(var_df)))
-    sys.stderr.write('{}\n'.format(var_df.dtypes))
-    sys.stderr.write('{}\n'.format(var_df.head()))
+    # sys.stderr.write('var_df: {}\n'.format(len(var_df)))
+    # sys.stderr.write('{}\n'.format(var_df.dtypes))
+    # sys.stderr.write('{}\n'.format(var_df.head()))
 
-
-    with open(var_path, 'w') as f:
-        f.write(
-            '#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\t{}'.format(
-                '\t'.join('P{}'.format(1 + i) for i in range(sample))))
+    with open(var_path, 'a') as f:
+        if cnt == 0:
+            f.write(
+                '#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\t{}'.format(
+                    '\t'.join('P{}'.format(1 + i) for i in range(sample))))
         p_lst = sample
         chrom = pos = None
         for line in var_df.itertuples(index=False, name=None):
@@ -97,30 +97,35 @@ while True:
         f.write('\n')
     del var_df
     gc.collect()
+    cnt +=1
 
+    # Write DataFrame
+    scidbstrm.write()
+
+
+# Run RVTest
+assoc_df = None
+if cnt:
     cmd = ('/a/executable/rvtest',
            '--noweb',
            '--pheno', pheno_path,
            '--inVcf', var_path,
            '--single', 'wald',
            '--out', assoc_path)
-    sys.stderr.write('cmd: {}\n'.format(' '.join(cmd)))
+    # sys.stderr.write('cmd: {}\n'.format(' '.join(cmd)))
     subprocess.call(cmd, stdout=open('/dev/null'))
 
     assoc_single_path = os.path.join(inst_path, 'out.SingleWald.assoc')
-    assoc_df = pandas.read_csv(
-        filepath_or_buffer=assoc_single_path,
-        sep='\t')
-    sys.stderr.write('assoc_df: {}\n'.format(len(assoc_df)))
-
-    # Write DataFrame
-    scidbstrm.write(assoc_df)
-    del assoc_df
+    assoc_df = pandas.read_csv(filepath_or_buffer=assoc_single_path, sep='\t')
+    # sys.stderr.write('assoc_df: {}\n'.format(len(assoc_df)))
 
 
 # Cleanup
 shutil.rmtree(inst_path)
 
 # Write final DataFrame (if any)
-sys.stderr.write('-- - stop - --\n')
-scidbstrm.write()
+sys.stderr.write('-- - stop {} - --\n'.format(cnt))
+if assoc_df is not None:
+    scidbstrm.write(assoc_df)
+else:
+    scidbstrm.write()
