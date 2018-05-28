@@ -6,13 +6,10 @@ load_library('stream');
 store(
   redimension(
     stream(
-      apply(
-        aio_input(
-          'path=/a/gen.vcf',
-          'header=1',
-          'num_attributes=509'),
-        chrom, int64(a0),
-        pos,   int64(a1)),
+      aio_input(
+        'path=/a/gen.vcf',
+        'header=1',
+        'num_attributes=9'),
       'python -u /a/load.py',
       'format=feather',
       'types=int64,int64,int64,int64,int64,int64',
