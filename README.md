@@ -261,7 +261,7 @@ real	2m19.763s
 ```
 Schema used:
 ```bash
-> iquery -aq "show(var)"
+> iquery --afl --query "show(var)"
 {i} schema
 {0} 'var<gt1:int64,gt2:int64,phase:int64>
         [chrom=1:20:0:1; pos=1:*:0:100; p=1:360000:0:360000]
@@ -292,6 +292,9 @@ RAM.
 
 ### Load Variants and Phenotypes in SciDB
 
+The input file, `gen.vcf` is split into `32` equal-sized files. The
+load query is modified to load the `32` files in parallel, one on each
+SciDB instance.
 ```bash
 > time iquery --afl --no-fetch --query-file load.afl
 ...
@@ -307,7 +310,7 @@ RAM.
 ```
 Schema used:
 ```bash
-> iquery -aq "show(var)"
+> iquery --afl --query "show(var)"
 {i} schema
 {0} 'var<gt1:int64,gt2:int64,phase:int64>
         [chrom=1:30:0:1; pos=1:*:0:1; p=1:360000:0:360000]'
