@@ -10,7 +10,7 @@ store(
         aio_input(
           'path=/a/gen.vcf',
           'header=1',
-          'num_attributes=10009'),
+          'num_attributes=509'),
         chrom, int64(a0),
         pos,   int64(a1)),
       'python -u /a/load.py',

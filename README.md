@@ -172,7 +172,7 @@ RVTESTS finished successfully
 ```bash
 > time iquery --afl --no-fetch --query-file load.afl
 ...
-real	2m16.397s
+real	2m24.595s
 ```
 
 ### Stream Data and Run RVTest in SciDB
@@ -180,7 +180,7 @@ real	2m16.397s
 ```bash
 > time iquery --no-fetch --afl --query-file stream.afl
 ...
-real	0m44.291s
+real	0m36.714s
 ```
 
 ### Filter Variants by Chromosome and Position

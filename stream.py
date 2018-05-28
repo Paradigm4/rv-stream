@@ -38,6 +38,9 @@ scidbstrm.write()
 
 cnt = 0
 while True:
+    if cnt % 10 == 0:
+        sys.stderr.write('-- - iteration {} - --\n'.format(cnt))
+
     # Read DataFrame
     var_df = scidbstrm.read()
 
@@ -113,7 +116,9 @@ if cnt:
            '--single', 'wald',
            '--out', assoc_path)
     # sys.stderr.write('cmd: {}\n'.format(' '.join(cmd)))
-    subprocess.call(cmd, stdout=open('/dev/null'))
+    rcode = subprocess.call(cmd, stdout=open('/dev/null'))
+    if rcode:
+        raise Exception('rvtest execution failed')
 
     assoc_single_path = os.path.join(inst_path, 'out.SingleWald.assoc')
     assoc_df = pandas.read_csv(filepath_or_buffer=assoc_single_path, sep='\t')
