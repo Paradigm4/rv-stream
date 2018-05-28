@@ -204,8 +204,8 @@ real	0m10.380s
 
 ## Large Setup
 
-We used the `gen.py` script to generate a `20,000` lines variants
-file with `100,000` individuals and a corresponding phenotype file for the
+We used the `gen.py` script to generate a `20,000` lines variants file
+with `100,000` individuals and a corresponding phenotype file for the
 `100,000` individuals.
 
 ```bash
@@ -249,7 +249,7 @@ RVTESTS finished successfully
 ```bash
 > time iquery --afl --no-fetch --query-file load.afl
 ...
-real	0m30.280s
+real	4m23.487s
 ```
 
 ### Stream Data and Run RVTest in SciDB
@@ -257,12 +257,12 @@ real	0m30.280s
 ```bash
 > time iquery --no-fetch --afl --query-file stream.afl
 ...
-real	3m20.771s
+real	2m19.763s
 ```
 Schema used:
 ```bash
 > iquery -aq "show(var)"
 {i} schema
 {0} 'var<gt1:int64,gt2:int64,phase:int64>
-        [chrom=1:20:0:20; pos=1:*:0:30; p=1:360000:0:360000]'
+        [chrom=1:20:0:1; pos=1:*:0:100; p=1:360000:0:360000]
 ```
