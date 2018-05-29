@@ -290,6 +290,25 @@ We used 32 SciDB instances running on the same server. The PC has two
 Intel Xeon processors at `2.30GHz` with 16 cores each and `250 GB`
 RAM.
 
+### Single-Threaded RVTest
+
+```bash
+> ./executable/rvtest --noweb --pheno gen.pheno --inVcf gen.vcf --single wald --out out
+...
+[INFO]	Program version: 20171009
+[INFO]	Analysis started at: Mon May 28 22:04:04 2018
+[INFO]	Loaded [ 353948 ] samples from genotype files
+[INFO]	Loaded [ 353948 ] sample pheontypes
+[INFO]	Loaded 157381 male, 157453 female and 39114 sex-unknonw samples from gen-xl.pheno
+[INFO]	Analysis begins with [ 353948 ] samples...
+[INFO]	Impute missing genotype to mean (by default)
+[INFO]	Analysis started
+[INFO]	Analyzed [ 76183 ] variants
+[INFO]	Analysis ends at: Tue May 29 02:55:01 2018
+[INFO]	Analysis took 17457 seconds
+RVTESTS finished successfully
+```
+
 ### Load Variants and Phenotypes in SciDB
 
 The input file, `gen.vcf` is split into `32` equal-sized files. The
